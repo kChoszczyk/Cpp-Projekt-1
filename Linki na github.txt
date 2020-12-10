@@ -1,0 +1,19 @@
+https://en.cppreference.com/w/cpp/utility/variant
+http://mst.mimuw.edu.pl/lecture.php?lecture=poc&part=Ch7
+https://mybinder.org/v2/gh/sgepner/Programowanie-Obiektowe-w-Cpp.git/master
+https://github.com/sgepner/Programowanie-Obiektowe-w-Cpp
+https://cpp-polska.pl/post/czym-jest-stdvariantij
+https://www.samouczekprogramisty.pl/podstawy-uml/
+https://github.com/kubagalecki-classes/lab3-kChoszczyk
+https://github.com/kubagalecki-classes/lab4-kChoszczyk
+https://github.com/kubagalecki-classes/cpp-p1
+
+Dziedziczenie:
+•	Mkr, Mag, Inz i Rob dziedziczą po Pracownik
+Używanie czyli np. zwracanie tego typu z funkcji
+•	Firma używa PrinterPracownikow
+•	PrinterPracownikow używa TypyPracownikow
+•	Gra używa TypyPracownikow
+Agregacja, czyli zawieranie wielu instancji innej klasy:
+•	Firma agreguje Kredyt i TypyPracownikow
+•	Gra agreguje Firma
