@@ -17,3 +17,169 @@ Używanie czyli np. zwracanie tego typu z funkcji
 Agregacja, czyli zawieranie wielu instancji innej klasy:
 •	Firma agreguje Kredyt i TypyPracownikow
 •	Gra agreguje Firma
+
+#include <iostream>
+#include "RandomNameGenerator.hpp"
+#include <variant>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+const double wynInz = 4000, wynMkr = 3000, wynMag = 2000, wynRob = 1500;
+const double cInz = 3, cMkr = 1, cMag = 3, cRob = 4;
+const double M = 1.23;
+const int maks_rat = 36;
+
+struct Pracownik
+{
+protected:
+	string imie;
+};
+
+struct inz : public Pracownik
+{
+	inz() {
+		imie = get_random_name();
+		wydzial = "Najlepszy na swiecie MEiL";
+	}
+	inz(string wyd) : wydzial{ wyd } {
+		imie = get_random_name();
+	}
+	void print()
+	{
+		cout << "Zawod: Inzynier \t Imie: " << imie << "\t Wydzial: " << wydzial << endl;
+	}
+private:
+	string wydzial;
+};
+
+struct mag : public Pracownik
+{
+	mag() {
+		imie = get_random_name();
+		widlak = false;
+	}
+	mag(bool wid) : widlak{ wid } {
+		imie = get_random_name();
+	}
+	void print()
+	{
+		cout << "Zawod: Magazynier \t Imie: " << imie << "\t Jazda wozkiem? " << endl;
+	}
+private:
+	bool widlak;
+};
+
+struct mkr : public Pracownik
+{
+	mkr() {
+		imie = get_random_name();
+		follow = 30;
+	}
+	mkr(int fol) : follow{ fol } {
+		imie = get_random_name();
+	}
+	void print()
+	{
+		cout << "Zawod: Marketer \t Imie: " << imie << "\t Followersi " << follow << endl;
+	}
+private:
+	int follow;
+};
+
+struct rob : public Pracownik
+{
+	rob() {
+		imie = get_random_name();
+		but = 43;
+	}
+	rob(float b) : but{ b } {
+		imie = get_random_name();
+	}
+	void print()
+	{
+		cout << "Zawod: Robotnik \t Imie: " << imie << "\t Numer buta: " << but << endl;
+	}
+private:
+	float but;
+};
+
+struct kredyt
+{
+	kredyt(double dl, int rat)
+	{
+		if(rat <= maks_rat)
+			pozostale_raty = rat;
+		else
+		{
+			cout << "Przekroczyles limit rat, przypisano maksymalna liczbe rat, czyli: " << maks_rat << endl;
+			pozostale_raty = maks_rat;
+		}
+		dlug = dl*pow(1.005,pozostale_raty);
+	}
+	double splac_rate()
+	{
+		return 0;
+	}
+private:
+	double dlug;
+	int pozostale_raty;
+	double odsetki;
+};
+
+int main()
+{
+	string komenda = "nic";
+	cout << "Witaj w enterpr Co." << endl;
+	cout << "Aktualny stan firmy) " << endl;
+	cout << "Mozesz wykonac jedna z ponizszych akcji)" << endl;
+	cout << "\t - lp - wylistuj pracownikow \n \t - zinz - zatrudnij inzyniera \n";
+	cout << "\t - zmag - zatrudnij magazyniera \n \t - zmkr - zatrudnij marketera \n";
+	cout << "\t - zrob - zatrudnij robotnika \n \t - wkr - wez kredyt \n \t - kt - koniec tury, zacznij nowy miesiac \n";
+	cin >> komenda;
+	while (1)
+	{
+		if (komenda == "lp")
+		{
+			cout << "Wybrales wylistowanie pracownikow" << endl;
+			break;
+		}
+		else if (komenda == "zinz")
+		{
+			cout << "Wybrales zatrudnienie inzyniera" << endl;
+			break;
+		}
+		else if (komenda == "zmag")
+		{
+			cout << "Wybrales zatrudnienie magazyniera" << endl;
+			break;
+		}
+		else if (komenda == "zmkr")
+		{
+			cout << "Wybrales zatrudnienie marketera" << endl;
+			break;
+		}
+		else if (komenda == "zrob")
+		{
+			cout << "Wybrales zatrudnienie robotnika" << endl;
+			break;
+		}
+		else if (komenda == "wkr")
+		{
+			cout << "Wybrales wziecie kredytu" << endl;
+			break;
+		}
+		else if (komenda == "kt")
+		{
+			cout << "Wybrales koniec tury" << endl;
+			break;
+		}
+		else
+		{
+			cout << "Nie wybrales nic, powtorz wybor" << endl;
+			cin >> komenda;
+		}
+	}
+	return 0;
+}
