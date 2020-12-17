@@ -8,8 +8,6 @@
 
 using namespace std;
 
-const int maks_rat = 36;
-const double odsetki = 1.005;
 const int N = 12;
 
 
@@ -94,8 +92,9 @@ private:
 
 struct kredyt
 {
-	kredyt() { dlug = 0; pozostale_raty = 0; rata = 0; }
-	kredyt(double dl, int rat)
+	kredyt() : maks_rat{ 36 }, dlug{ 0 }, pozostale_raty{ 0 }, rata{ 0 } {}
+
+	kredyt(double dl, int rat, int mx) : maks_rat{ mx }
 	{
 		if (rat <= maks_rat)
 			pozostale_raty = rat;
@@ -109,6 +108,12 @@ struct kredyt
 		cout << "Calkowita kwota twojego kredytu wyniosla: " << dlug << endl;
 		cout << "Wysokosc raty wynosi: " << rata << endl;
 	}
+
+	kredyt operator=(kredyt k)
+	{
+		return k;
+	}
+
 	double splac_rate()
 	{
 		dlug = dlug - rata;
@@ -122,10 +127,14 @@ struct kredyt
 	{
 		return rata;
 	}
+
+	
 private:
 	double dlug;
 	int pozostale_raty;
 	double rata;
+	const int maks_rat;
+	const double odsetki = 1.005;
 };
 
 struct PrinterPracownikow
@@ -141,7 +150,7 @@ struct Firma
 {
 	using pracownik_typ = variant <inz, mag, mkr, rob>;
 	
-	Firma()
+	Firma(int mx) : maks_rat{ mx }
 	{
 		Pracownicy = make_unique<pracownik_typ[]>(max_prac);
 		Kredyty = make_unique<kredyt[]>(max_kred);
@@ -175,7 +184,7 @@ struct Firma
 	{
 		if (n_kredytow < max_kred)
 		{
-			Kredyty[n_kredytow] = kredyt{ kwota,liczba_rat };
+			Kredyty[n_kredytow] = kredyt{ kwota,liczba_rat,maks_rat };
 			if (zadluzenie + Kredyty[n_kredytow].get_dlug() < M * wartosc_firmy())
 			{
 				zadluzenie += Kredyty[n_kredytow].get_dlug();
@@ -307,6 +316,7 @@ private:
 	const double start_kasa = 30000;
 	const int max_prac = 1000;
 	const int max_kred = 12;
+	const int maks_rat;
 };
 
 struct Gra
@@ -314,7 +324,7 @@ struct Gra
 	using pracownik_typ = variant <inz, mag, mkr, rob>;
 	Gra()
 	{
-		firma = make_unique<Firma>();
+		firma = make_unique<Firma>(maks_rat);
 		cout << "Witaj w enterpr Co." << endl;
 		wygrana = false;
 		przegrana = false;
@@ -344,7 +354,7 @@ struct Gra
 		cout << "\t - lp - wylistuj pracownikow \n \t - zinz - zatrudnij inzyniera \n";
 		cout << "\t - zmag - zatrudnij magazyniera \n \t - zmkr - zatrudnij marketera \n";
 		cout << "\t - zrob - zatrudnij robotnika \n \t - wkr - wez kredyt \n \t - kt - koniec tury, zacznij nowy miesiac \n";
-		cin.ignore(numeric_limits<streamsize>::max(), '\n');
+		//cin.ignore(numeric_limits<streamsize>::max(), '\n');
 		cin >> komenda;
 		cout << endl;
 		while (1)
@@ -497,6 +507,7 @@ private:
 		firma->zaplac_wynagrodzenie();
 		miesiac++;
 	}
+	const int maks_rat = 36;
 	const double wart_docelowa = 200000;
 	bool wygrana;
 	bool przegrana;
